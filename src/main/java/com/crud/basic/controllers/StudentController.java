@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.crud.basic.models.Student;
 import com.crud.basic.services.IStudentService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(path = "/api/v1/students")
 public class StudentController {
@@ -34,13 +36,13 @@ public class StudentController {
   }
 
   @PostMapping
-  public ResponseEntity<Void> registerStudent(@RequestBody Student student){
+  public ResponseEntity<Void> registerStudent(@Valid @RequestBody Student student){
     studentService.save(student);
     return ResponseEntity.status(201).build();
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Void> updateStudent(@PathVariable Long id, @RequestBody Student student){
+  public ResponseEntity<Void> updateStudent(@PathVariable Long id, @Valid @RequestBody Student student){
     studentService.modify(id, student);
     return ResponseEntity.noContent().build();
   }

@@ -6,7 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.crud.basic.mappers.ToMapper;
 import com.crud.basic.models.Student;
+import com.crud.basic.models.DTOs.StudentResponseDetailDTO;
 import com.crud.basic.repositories.IStudentRepository;
 
 @Service
@@ -17,6 +19,12 @@ public class StudentService implements IStudentService{
   @Override
   public List<Student> getAll() {
     return repository.findAll();
+  }
+
+  @Override
+  public List<StudentResponseDetailDTO> getAllDetails() {
+    return ToMapper.toEntity(null)
+    throw new UnsupportedOperationException("Unimplemented method 'getAllDetails'");
   }
 
   @Override
