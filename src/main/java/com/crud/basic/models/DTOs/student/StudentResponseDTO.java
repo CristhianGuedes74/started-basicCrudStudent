@@ -1,4 +1,4 @@
-package com.crud.basic.models.DTOs;
+package com.crud.basic.models.DTOs.student;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -6,7 +6,7 @@ import lombok.Builder;
 
 @Builder
 public record StudentResponseDTO(
-  @Positive
+  @Positive(message = "El Identificador debe ser positivo. Inténtelo de nuevo.")
   Long id,
 
   @NotBlank(message = "Cédula incorrecta. Inténtelo de nuevo.")

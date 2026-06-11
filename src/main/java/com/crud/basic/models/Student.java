@@ -1,6 +1,6 @@
 package com.crud.basic.models;
 
-import java.time.LocalDateTime;
+import com.crud.basic.models.utils.DataAuditory;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,7 +17,7 @@ import lombok.Setter;
 @Builder
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
-public class Student {
+public class Student extends DataAuditory{
   @Column(nullable = false)
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long studentId;
@@ -34,11 +34,11 @@ public class Student {
   @Column(nullable = false)
   private Integer age;
   
-  @Column(nullable = false)
-  private LocalDateTime createdAt;
+  // @Column(nullable = false)
+  // private LocalDateTime createdAt;
   
-  @Column(nullable = false)
-  private LocalDateTime updatedAt;
+  // @Column(nullable = false)
+  // private LocalDateTime updatedAt;
 
   @Builder.Default
   private Boolean deleted = false;

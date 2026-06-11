@@ -1,5 +1,6 @@
 package com.crud.basic.exceptions;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,13 +13,29 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
   @ExceptionHandler(exception = StudentNotFoundException.class)
-  public ResponseEntity<String> handleNotFound(StudentNotFoundException ex){
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+  public ResponseEntity<ErrorResponseDTO> handleNotFound(StudentNotFoundException ex){
+    ErrorResponseDTO error = new ErrorResponseDTO(
+      HttpStatus.NOT_FOUND.value(),
+      "NOT FOUND",
+      ex.getMessage(),
+      LocalDateTime.now()
+    );
+
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    // return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
   }
 
   @ExceptionHandler(exception = StudentAlreadyExistException.class)
-  public ResponseEntity<String> handlerDuplicated(StudentAlreadyExistException ex){
-    return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+  public ResponseEntity<ErrorResponseDTO> handlerDuplicated(StudentAlreadyExistException ex){
+    ErrorResponseDTO error = new ErrorResponseDTO(
+      HttpStatus.CONFLICT.value(),
+      "CONFLIC",
+      ex.getMessage(),
+      LocalDateTime.now()
+    );
+
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    // return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
   }
 
   @ExceptionHandler(exception = MethodArgumentNotValidException.class)

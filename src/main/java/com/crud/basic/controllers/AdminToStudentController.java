@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.crud.basic.models.DTOs.StudentResponseDetailByAdminDTO;
+import com.crud.basic.models.DTOs.student.StudentResponseDetailAsAdminDTO;
 import com.crud.basic.services.IStudentService;
 
 @RestController
@@ -19,12 +19,12 @@ public class AdminToStudentController {
   private IStudentService service;
 
   @GetMapping
-  public ResponseEntity<List<StudentResponseDetailByAdminDTO>> showAllStudents(){
+  public ResponseEntity<List<StudentResponseDetailAsAdminDTO>> showAllStudents(){
     return ResponseEntity.ok(service.getAllDetailsByAdmin());
   }
 
   @GetMapping(path = "/{id}")
-  public ResponseEntity<StudentResponseDetailByAdminDTO> showStudent(@PathVariable Long id){
+  public ResponseEntity<StudentResponseDetailAsAdminDTO> showStudent(@PathVariable Long id){
     return ResponseEntity.ok(service.getByIdByAdmin(id));
   }
 }

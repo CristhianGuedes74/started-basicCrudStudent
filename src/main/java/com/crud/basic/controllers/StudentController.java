@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.crud.basic.models.DTOs.StudentRegisterRequestDTO;
-import com.crud.basic.models.DTOs.StudentRequestDTO;
-import com.crud.basic.models.DTOs.StudentResponseDTO;
-import com.crud.basic.models.DTOs.StudentResponseDetailDTO;
+import com.crud.basic.models.DTOs.student.StudentRegisterRequestDTO;
+import com.crud.basic.models.DTOs.student.StudentRequestDTO;
+import com.crud.basic.models.DTOs.student.StudentResponseDTO;
+import com.crud.basic.models.DTOs.student.StudentResponseDetailDTO;
 import com.crud.basic.services.IStudentService;
 
 import jakarta.validation.Valid;

@@ -1,13 +1,13 @@
-package com.crud.basic.mappers;
+package com.crud.basic.mappers.student;
 
 import com.crud.basic.models.Student;
-import com.crud.basic.models.DTOs.StudentRegisterRequestDTO;
-import com.crud.basic.models.DTOs.StudentRequestDTO;
-import com.crud.basic.models.DTOs.StudentResponseDTO;
-import com.crud.basic.models.DTOs.StudentResponseDetailByAdminDTO;
-import com.crud.basic.models.DTOs.StudentResponseDetailDTO;
+import com.crud.basic.models.DTOs.student.StudentRegisterRequestDTO;
+import com.crud.basic.models.DTOs.student.StudentRequestDTO;
+import com.crud.basic.models.DTOs.student.StudentResponseDTO;
+import com.crud.basic.models.DTOs.student.StudentResponseDetailAsAdminDTO;
+import com.crud.basic.models.DTOs.student.StudentResponseDetailDTO;
 
-public class ToMapper {
+public class ToStudentMapper {
     public static StudentResponseDTO toResponse(Student student){
         if(student == null) return null;
 
@@ -30,10 +30,10 @@ public class ToMapper {
         );
     }
 
-    public static StudentResponseDetailByAdminDTO toResponseDetailByAdmin(Student student){
+    public static StudentResponseDetailAsAdminDTO toResponseDetailByAdmin(Student student){
         if(student == null) return null;
 
-        return new StudentResponseDetailByAdminDTO(
+        return new StudentResponseDetailAsAdminDTO(
             student.getStudentId(),
             student.getIc(),
             student.getName(),

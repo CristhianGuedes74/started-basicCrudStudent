@@ -1,6 +1,6 @@
-package com.crud.basic.models.DTOs;
+package com.crud.basic.models.DTOs.student;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.Builder;
 
 @Builder
-public record StudentResponseDetailByAdminDTO(
+public record StudentResponseDetailAsAdminDTO(
   @Positive
   Long id,
 
@@ -25,7 +25,7 @@ public record StudentResponseDetailByAdminDTO(
   @Min(6) @Max(52)
   Integer age,
 
-  LocalDateTime createdAt,
+  Instant createdAt,
   
-  LocalDateTime updatedAt
+  Instant updatedAt
 ) {}

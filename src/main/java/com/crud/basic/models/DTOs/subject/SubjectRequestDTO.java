@@ -1,0 +1,18 @@
+package com.crud.basic.models.DTOs.subject;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+
+public record SubjectRequestDTO(
+    @NotBlank(message = "Nombre de Materia incorrecta. Inténtelo de nuevo.")
+    String name,
+    
+    @NotBlank(message = "Código de Materia incorrecta. Inténtelo de nuevo.")
+    String code,
+    
+    @Positive(message = "Número de Créditos incorrecta. Inténtelo de nuevo.")
+    Integer credits,
+    
+    @Positive(message = "Número de Horas Semanales incorrecta. Inténtelo de nuevo.")
+    Integer weeklyHours
+) {}
