@@ -1,13 +1,20 @@
 package com.crud.basic.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.crud.basic.exceptions.StudentAlreadyExistException;
+import com.crud.basic.exceptions.StudentNotFoundException;
 import com.crud.basic.mappers.ToMapper;
 import com.crud.basic.models.Student;
+import com.crud.basic.models.DTOs.StudentRegisterRequestDTO;
+import com.crud.basic.models.DTOs.StudentRequestDTO;
+import com.crud.basic.models.DTOs.StudentResponseDTO;
+import com.crud.basic.models.DTOs.StudentResponseDetailByAdminDTO;
 import com.crud.basic.models.DTOs.StudentResponseDetailDTO;
 import com.crud.basic.repositories.IStudentRepository;
 
@@ -17,45 +24,78 @@ public class StudentService implements IStudentService{
   private IStudentRepository repository;
 
   @Override
-  public List<Student> getAll() {
-    return repository.findAll();
+  public List<StudentResponseDTO> getAll() {
+    return repository.findAllByDeletedFalse()
+      .stream()
+      .map(ToMapper::toResponse)
+    .toList();
   }
 
   @Override
   public List<StudentResponseDetailDTO> getAllDetails() {
-    return ToMapper.toEntity(null)
-    throw new UnsupportedOperationException("Unimplemented method 'getAllDetails'");
+    return repository.findAllByDeletedFalse()
+      .stream()
+      .map(ToMapper::toResponseDetail)
+    .toList();
   }
 
   @Override
-  public Optional<Student> getById(Long id) {
-    return repository.findById(id);
+  public List<StudentResponseDetailByAdminDTO> getAllDetailsByAdmin() {
+    return repository.findAllByDeletedFalse()
+      .stream()
+      .map(ToMapper::toResponseDetailByAdmin)
+    .toList();
   }
 
   @Override
-  public void save(Student student) {
-    if(repository.findByIc(student.getIc()).isPresent()) throw new
-      RuntimeException("This Student already exist.");
+  public StudentResponseDetailByAdminDTO getByIdByAdmin(Long id) {
+    Student student = repository.findByStudentIdAndDeletedFalse(id).orElseThrow(() -> 
+      new StudentNotFoundException("Student doesn't found with " + id + " ID."));
 
-    repository.save(student);
+    return ToMapper.toResponseDetailByAdmin(student);
   }
 
   @Override
-  public void modify(Long id, Student student) {
-    repository.findById(id).orElseThrow(() ->
-      new RuntimeException("Student doesn't found."));
+  public StudentResponseDetailDTO getById(Long id) {
+    Student student = repository.findByStudentIdAndDeletedFalse(id).orElseThrow(() -> 
+      new StudentNotFoundException("Student doesn't found with " + id + " ID."));
 
-    // oldStudent.setName(student.getName());
-    // oldStudent.setLastname(student.getLastname());
-    // oldStudent.setAge(student.getAge());
-    repository.save(student);
+    return ToMapper.toResponseDetail(student);
+  }
+
+  @Override
+  public StudentResponseDetailDTO save(StudentRegisterRequestDTO student) {
+    if(repository.findByIcAndDeletedFalse(student.ic()).isPresent()) throw new
+      StudentAlreadyExistException("This Student already exist.");
+
+    Student studentSaved = ToMapper.toEntityRegister(student);
+    studentSaved.setCreatedAt(LocalDateTime.now());
+    studentSaved.setUpdatedAt(LocalDateTime.now());
+
+    return ToMapper.toResponseDetail(repository.save(studentSaved));
+  }
+
+  @Override
+  public StudentResponseDetailDTO modify(Long id, StudentRequestDTO dto) {
+    Student student = repository.findByStudentIdAndDeletedFalse(id).orElseThrow(() ->
+      new StudentNotFoundException("Student doesn't found."));
+
+    student.setName(dto.name());
+    student.setLastname(dto.lastname());
+    student.setAge(dto.age());
+    student.setUpdatedAt(LocalDateTime.now());
+
+    return ToMapper.toResponseDetail(repository.save(student));
   }
 
   @Override
   public void remove(Long id) {
-    Student studentToDelete = repository.findById(id).orElseThrow(() ->
-      new RuntimeException("Student doesn't found."));
+    Student studentToDelete = repository.findByStudentIdAndDeletedFalse(id).orElseThrow(() ->
+      new StudentNotFoundException("Student doesn't found."));
 
-    repository.delete(studentToDelete);
+      studentToDelete.setUpdatedAt(LocalDateTime.now());
+      studentToDelete.setDeleted(true);
+
+    repository.save(studentToDelete);
   }
 }

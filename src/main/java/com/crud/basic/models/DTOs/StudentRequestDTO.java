@@ -3,11 +3,10 @@ package com.crud.basic.models.DTOs;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 
+@Builder
 public record StudentRequestDTO(
-  @NotBlank(message = "Cédula incorrecta. Inténtelo de nuevo.")
-  String ic,
-  
   @NotBlank(message = "Nombre incorrecto. Inténtelo de nuevo.")
   String name,
 

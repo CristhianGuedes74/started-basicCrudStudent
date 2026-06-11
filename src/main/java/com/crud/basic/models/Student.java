@@ -1,5 +1,7 @@
 package com.crud.basic.models;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,4 +33,13 @@ public class Student {
   
   @Column(nullable = false)
   private Integer age;
+  
+  @Column(nullable = false)
+  private LocalDateTime createdAt;
+  
+  @Column(nullable = false)
+  private LocalDateTime updatedAt;
+
+  @Builder.Default
+  private Boolean deleted = false;
 }

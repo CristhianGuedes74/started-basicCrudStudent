@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.crud.basic.models.Student;
+import com.crud.basic.models.DTOs.StudentRegisterRequestDTO;
+import com.crud.basic.models.DTOs.StudentRequestDTO;
+import com.crud.basic.models.DTOs.StudentResponseDTO;
+import com.crud.basic.models.DTOs.StudentResponseDetailDTO;
 import com.crud.basic.services.IStudentService;
 
 import jakarta.validation.Valid;
@@ -25,27 +28,27 @@ public class StudentController {
   private IStudentService studentService;
 
   @GetMapping
-  public ResponseEntity<List<Student>> showAllStudent(){
+  public ResponseEntity<List<StudentResponseDTO>> showAllStudent(){
     return ResponseEntity.ok(studentService.getAll());
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Student> showStudent(@PathVariable Long id){
-    return studentService.getById(id).map(ResponseEntity::ok)
-      .orElse(ResponseEntity.notFound().build());
+  public ResponseEntity<StudentResponseDetailDTO> showStudent(@PathVariable Long id){
+    return ResponseEntity.ok(studentService.getById(id));
   }
 
   @PostMapping
-  public ResponseEntity<Void> registerStudent(@Valid @RequestBody Student student){
-    studentService.save(student);
-    return ResponseEntity.status(201).build();
+  public ResponseEntity<StudentResponseDetailDTO> registerStudent(@Valid @RequestBody StudentRegisterRequestDTO student){
+    StudentResponseDetailDTO response = studentService.save(student);
+    return ResponseEntity.status(201).body(response);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Void> updateStudent(@PathVariable Long id, @Valid @RequestBody Student student){
-    studentService.modify(id, student);
-    return ResponseEntity.noContent().build();
-  }
+  public ResponseEntity<StudentResponseDetailDTO> updateStudent(@PathVariable Long id,
+      @Valid @RequestBody StudentRequestDTO student){
+    StudentResponseDetailDTO response = studentService.modify(id, student);
+    return ResponseEntity.ok(response);
+  } 
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteStudent(@PathVariable Long id){
