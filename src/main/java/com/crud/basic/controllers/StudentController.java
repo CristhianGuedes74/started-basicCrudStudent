@@ -17,6 +17,7 @@ import com.crud.basic.models.DTOs.student.StudentRegisterRequestDTO;
 import com.crud.basic.models.DTOs.student.StudentModifyRequestDTO;
 import com.crud.basic.models.DTOs.student.StudentResponseDTO;
 import com.crud.basic.models.DTOs.student.StudentResponseDetailDTO;
+import com.crud.basic.models.DTOs.student.StudentTestResponseDTO;
 import com.crud.basic.services.IStudentService;
 
 import jakarta.validation.Valid;
@@ -41,6 +42,11 @@ public class StudentController {
     return ResponseEntity.ok(studentService.getById(id));
   }
 
+  @GetMapping("/admin/{id}")
+  public ResponseEntity<StudentTestResponseDTO> showStudentAllDetails(@PathVariable Long id){
+    return ResponseEntity.ok(studentService.getByIdIgnoringFilter(id));
+  }
+
   @PostMapping
   public ResponseEntity<StudentResponseDetailDTO> registerStudent(@Valid @RequestBody StudentRegisterRequestDTO student){
     StudentResponseDetailDTO response = studentService.save(student);
@@ -56,7 +62,7 @@ public class StudentController {
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteStudent(@PathVariable Long id){
-    studentService.newRemove(id);
+    studentService.remove(id);
     return ResponseEntity.noContent().build();
   }
 }

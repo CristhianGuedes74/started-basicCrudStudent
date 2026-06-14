@@ -1,6 +1,5 @@
 package com.crud.basic.models.DTOs.student;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

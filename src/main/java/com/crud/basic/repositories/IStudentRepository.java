@@ -11,16 +11,20 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.crud.basic.models.Student;
-import com.crud.basic.models.enums.StudentStates;
 
 @Repository
 public interface IStudentRepository extends JpaRepository<Student, Long>{
   Optional<Student> findByIc(String ic);
   Optional<Student> findByEmail(String ic);
-  List<Student> findByState(StudentStates state);
+  // List<Student> findByState(StudentStates state);
 
   @Modifying
   @Transactional
-  @Query("UPDATE User s SET s.state = 'DELETED' WHERE s.id = :id AND s.state != 'DELETED'")
+  @Query(value = "UPDATE User s SET s.state = 'DELETED' WHERE s.id = :id AND s.state != 'DELETED'")
   void softDeletedById(@Param("id") Long id);
+
+  @Query(value = 
+    "SELECT u.*, s.* FROM users u LEFT JOIN student s ON u.id = s.id WHERE u.id = :id", 
+    nativeQuery = true)
+  Optional<Student> findByIdIgnoringFilter(@Param("id") Long id);
 }
