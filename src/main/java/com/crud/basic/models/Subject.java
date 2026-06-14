@@ -7,6 +7,8 @@ import com.crud.basic.models.utils.DataAuditory;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,7 +21,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Getter
 @NoArgsConstructor
-@SQLRestriction("state != 'DELETED' AND subjectStatus != 'CLOSED'")
+@SQLRestriction("state != 'DELETED'")
 public class Subject extends DataAuditory{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,8 +42,8 @@ public class Subject extends DataAuditory{
     private List<Course> courses; */
 
     @Builder.Default
+    @Enumerated(EnumType.STRING)
     private GenericStates state = GenericStates.ACTIVE;
-
 
     public void editSubject(String name, Integer credits, Integer weeklyHours){
         this.name = name;

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.crud.basic.models.Enrollment;
 
 @Repository
-public interface IEnrollmentRepositor extends JpaRepository<Enrollment, Long> {
+public interface IEnrollmentRepository extends JpaRepository<Enrollment, Long> {
     
 }
