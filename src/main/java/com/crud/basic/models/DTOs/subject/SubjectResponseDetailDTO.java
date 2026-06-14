@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 
 public record SubjectResponseDetailDTO(
-    @Positive(message = "El Identificador debe ser positivo. Inténtelo de nuevo.")
+    @Positive(message = "ID must be positive. Try it again.")
     Long subjectId,
 
     @NotBlank(message = "Nombre de Materia incorrecta. Inténtelo de nuevo.")
@@ -19,7 +19,7 @@ public record SubjectResponseDetailDTO(
     @Positive(message = "Número de Horas Semanales incorrecta. Inténtelo de nuevo.")
     Integer weeklyHours,
 
-    @Positive(message = "El Identificador Foráneo debe ser positivo. Inténtelo de nuevo.")
+    @Positive(message = "ID must be positive. Try it again.")
     Long courseId,
 
     @NotBlank(message = "Código de Materia incorrecta. Inténtelo de nuevo.")

@@ -2,6 +2,8 @@ package com.crud.basic.models;
 
 import java.time.LocalDate;
 
+import com.crud.basic.models.enums.EnrollmentState;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,11 +15,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Builder
-@Getter @Setter
+@Getter
 @NoArgsConstructor @AllArgsConstructor
 public class Enrollment {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +27,7 @@ public class Enrollment {
     @Column(nullable = false)
     private LocalDate registeredAt;
     
+    // (Course) N a N (Student)
     @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
@@ -33,4 +35,7 @@ public class Enrollment {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
+
+    @Builder.Default
+    private EnrollmentState state = EnrollmentState.PENDING;
 }

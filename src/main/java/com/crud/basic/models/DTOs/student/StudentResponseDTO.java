@@ -6,12 +6,12 @@ import lombok.Builder;
 
 @Builder
 public record StudentResponseDTO(
-  @Positive(message = "El Identificador debe ser positivo. Inténtelo de nuevo.")
+  @Positive(message = "ID must be positive. Try it again.")
   Long id,
 
-  @NotBlank(message = "Cédula incorrecta. Inténtelo de nuevo.")
+  @NotBlank(message = "Student IC incorrect. Try it again.")
   String ic,
   
-  @NotBlank(message = "Nombre incorrecto. Inténtelo de nuevo.")
+  @NotBlank(message = "Student name incorrect. Try it again.")
   String name
 ) {}

@@ -1,45 +1,25 @@
 package com.crud.basic.models;
 
-import com.crud.basic.models.utils.DataAuditory;
+import org.hibernate.annotations.SQLRestriction;
 
-import jakarta.persistence.Column;
+import com.crud.basic.models.enums.StudentStates;
+
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Entity
-@Builder
-@Getter @Setter
+@SuperBuilder
+@Getter
 @NoArgsConstructor @AllArgsConstructor
-public class Student extends DataAuditory{
-  @Column(nullable = false)
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long studentId;
-  
-  @Column(unique = true, nullable = false)
-  private String ic;
-  
-  @Column(nullable = false)
-  private String name;
-  
-  @Column(nullable = false)
-  private String lastname;
-  
-  @Column(nullable = false)
-  private Integer age;
-  
-  // @Column(nullable = false)
-  // private LocalDateTime createdAt;
-  
-  // @Column(nullable = false)
-  // private LocalDateTime updatedAt;
-
+public class Student extends User{
   @Builder.Default
-  private Boolean deleted = false;
+  private StudentStates academicState = StudentStates.ADDED;
+
+  public void changeStudentStatus(StudentStates status){
+    this.academicState = status;
+  }
 }

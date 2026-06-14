@@ -8,14 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 @Builder
-public record StudentRegisterRequestDTO(
-  @NotBlank(message = "Student IC incorrect. Try it again.")
-  String ic,
-
-  @Email(message = "Student email incorrect. Try it again.") @NotBlank(message = 
-    "Student email cannot be empty. Try it again.")
-  String email,
-  
+public record StudentModifyRequestDTO(  
   @NotBlank(message = "Student name incorrect. Try it again.")
   String name,
 
@@ -23,6 +16,7 @@ public record StudentRegisterRequestDTO(
   String lastname,
 
   @NotNull(message = "Student age cannot be null.")
-  @Min(6) @Max(52)
+  @Min(value = 6, message = "The minimum Student age value is 6.") @Max(value = 52, message = 
+    "The maximum student age value is 52.")
   Integer age
 ) {}

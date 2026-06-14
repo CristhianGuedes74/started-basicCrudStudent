@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.crud.basic.models.DTOs.student.StudentRegisterRequestDTO;
-import com.crud.basic.models.DTOs.student.StudentRequestDTO;
+import com.crud.basic.models.DTOs.student.StudentModifyRequestDTO;
 import com.crud.basic.models.DTOs.student.StudentResponseDTO;
 import com.crud.basic.models.DTOs.student.StudentResponseDetailDTO;
 import com.crud.basic.services.IStudentService;
@@ -22,10 +22,14 @@ import com.crud.basic.services.IStudentService;
 import jakarta.validation.Valid;
 
 @RestController
+// @RequiredArgsConstructor
 @RequestMapping(path = "/api/v1/students")
 public class StudentController {
-  @Autowired
-  private IStudentService studentService;
+  private final IStudentService studentService;
+
+  public StudentController(IStudentService service){
+    this.studentService = service;
+  }
 
   @GetMapping
   public ResponseEntity<List<StudentResponseDTO>> showAllStudent(){
@@ -45,14 +49,14 @@ public class StudentController {
 
   @PutMapping("/{id}")
   public ResponseEntity<StudentResponseDetailDTO> updateStudent(@PathVariable Long id,
-      @Valid @RequestBody StudentRequestDTO student){
+      @Valid @RequestBody StudentModifyRequestDTO student){
     StudentResponseDetailDTO response = studentService.modify(id, student);
     return ResponseEntity.ok(response);
   } 
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteStudent(@PathVariable Long id){
-    studentService.remove(id);
+    studentService.newRemove(id);
     return ResponseEntity.noContent().build();
   }
 }

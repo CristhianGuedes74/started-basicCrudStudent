@@ -4,13 +4,23 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.crud.basic.models.Student;
+import com.crud.basic.models.enums.StudentStates;
 
 @Repository
 public interface IStudentRepository extends JpaRepository<Student, Long>{
-  Optional<Student> findByIcAndDeletedFalse(String ic);
-  List<Student> findAllByDeletedFalse();
-  Optional<Student> findByStudentIdAndDeletedFalse(Long id);
+  Optional<Student> findByIc(String ic);
+  Optional<Student> findByEmail(String ic);
+  List<Student> findByState(StudentStates state);
+
+  @Modifying
+  @Transactional
+  @Query("UPDATE Student s SET s.state = 'DELETED' WHERE s.id = id")
+  void softDeletedById(@Param("id") Long id);
 }

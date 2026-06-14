@@ -1,11 +1,17 @@
 package com.crud.basic.exceptions;
 
+import org.springframework.http.HttpStatus;
+
 public class BusinessRuleException extends RuntimeException{
-  public BusinessRuleException(String message){
+  private final HttpStatus status;
+
+  public BusinessRuleException(String message, HttpStatus status){
     super(message);
+    this.status = status;
   }
 
   public BusinessRuleException(){
-    // super(message);
+    super("An unexpected Error ocurred. Please try again.");
+    this.status = HttpStatus.BAD_REQUEST;
   }
 }

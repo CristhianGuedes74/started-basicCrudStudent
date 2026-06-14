@@ -2,7 +2,7 @@ package com.crud.basic.services;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.crud.basic.exceptions.StudentAlreadyExistException;
@@ -10,90 +10,103 @@ import com.crud.basic.exceptions.StudentNotFoundException;
 import com.crud.basic.mappers.student.ToStudentMapper;
 import com.crud.basic.models.Student;
 import com.crud.basic.models.DTOs.student.StudentRegisterRequestDTO;
-import com.crud.basic.models.DTOs.student.StudentRequestDTO;
+import com.crud.basic.models.DTOs.student.StudentModifyRequestDTO;
 import com.crud.basic.models.DTOs.student.StudentResponseDTO;
-import com.crud.basic.models.DTOs.student.StudentResponseDetailAsAdminDTO;
 import com.crud.basic.models.DTOs.student.StudentResponseDetailDTO;
 import com.crud.basic.repositories.IStudentRepository;
 
 @Service
+// @RequiredArgsConstructor
 public class StudentService implements IStudentService{
-  @Autowired
-  private IStudentRepository repository;
+  private final IStudentRepository repository;
+
+  public StudentService(IStudentRepository repository){
+    this. repository = repository;
+  }
 
   @Override
   public List<StudentResponseDTO> getAll() {
-    return repository.findAllByDeletedFalse()
+    return repository.findAll()
       .stream()
-      .map(ToStudentMapper::toResponse)
+      .map(ToStudentMapper::toResponseDTO)
     .toList();
   }
 
   @Override
   public List<StudentResponseDetailDTO> getAllDetails() {
-    return repository.findAllByDeletedFalse()
+    return repository.findAll()
       .stream()
-      .map(ToStudentMapper::toResponseDetail)
+      .map(ToStudentMapper::toResponseDetailDTO)
     .toList();
   }
 
+  /*
   @Override
   public List<StudentResponseDetailAsAdminDTO> getAllDetailsByAdmin() {
-    return repository.findAllByDeletedFalse()
+    return repository.findAll()
       .stream()
       .map(ToStudentMapper::toResponseDetailByAdmin)
     .toList();
   }
+  */
 
+  /*
   @Override
   public StudentResponseDetailAsAdminDTO getByIdByAdmin(Long id) {
-    Student student = repository.findByStudentIdAndDeletedFalse(id).orElseThrow(() -> 
+    Student student = repository.findById(id).orElseThrow(() -> 
       new StudentNotFoundException("Student doesn't found with " + id + " ID."));
 
     return ToStudentMapper.toResponseDetailByAdmin(student);
   }
+  */
 
   @Override
   public StudentResponseDetailDTO getById(Long id) {
-    Student student = repository.findByStudentIdAndDeletedFalse(id).orElseThrow(() -> 
-      new StudentNotFoundException("Student doesn't found with " + id + " ID."));
+    Student student = repository.findById(id).orElseThrow(() -> 
+      new StudentNotFoundException());
 
-    return ToStudentMapper.toResponseDetail(student);
+    return ToStudentMapper.toResponseDetailDTO(student);
   }
 
   @Override
   public StudentResponseDetailDTO save(StudentRegisterRequestDTO student) {
-    if(repository.findByIcAndDeletedFalse(student.ic()).isPresent()) throw new
-      StudentAlreadyExistException("This Student already exist.");
+    repository.findByIc(student.ic()).orElseThrow(() -> new StudentAlreadyExistException());
+    repository.findByEmail(student.ic()).orElseThrow(() -> 
+      new StudentAlreadyExistException("This email is already used.", HttpStatus.CONFLICT));
 
-    Student studentSaved = ToStudentMapper.toEntityRegister(student);
-    // studentSaved.setCreatedAt(LocalDateTime.now());
-    // studentSaved.setUpdatedAt(LocalDateTime.now());
+    Student studentSaved = ToStudentMapper.toEntity(student);
 
-    return ToStudentMapper.toResponseDetail(repository.save(studentSaved));
+    return ToStudentMapper.toResponseDetailDTO(repository.save(studentSaved));
   }
 
   @Override
-  public StudentResponseDetailDTO modify(Long id, StudentRequestDTO dto) {
-    Student student = repository.findByStudentIdAndDeletedFalse(id).orElseThrow(() ->
-      new StudentNotFoundException("Student doesn't found."));
+  public StudentResponseDetailDTO modify(Long id, StudentModifyRequestDTO dto) {
+    Student student = repository.findById(id).orElseThrow(() ->
+      new StudentNotFoundException());
 
-    student.setName(dto.name());
-    student.setLastname(dto.lastname());
-    student.setAge(dto.age());
-    // student.setUpdatedAt(LocalDateTime.now());
+    // mapper.toEntity(dto, student);
+    student.updateStudent(dto.name(), dto.lastname(), dto.age());
 
-    return ToStudentMapper.toResponseDetail(repository.save(student));
+    return ToStudentMapper.toResponseDetailDTO(repository.save(student));
   }
 
+  /* 
   @Override
   public void remove(Long id) {
-    Student studentToDelete = repository.findByStudentIdAndDeletedFalse(id).orElseThrow(() ->
-      new StudentNotFoundException("Student doesn't found."));
+    Student studentToDelete = repository.findById(id).orElseThrow(() ->
+      new StudentNotFoundException());
 
-      // studentToDelete.setUpdatedAt(LocalDateTime.now());
-      studentToDelete.setDeleted(true);
+      studentToDelete.changeStatus(StudentStates.DELETED);
 
     repository.save(studentToDelete);
+  }
+  */
+
+  @Override
+  public void newRemove(Long id) {
+    repository.findById(id).orElseThrow(() ->
+      new StudentNotFoundException());
+
+    repository.softDeletedById(id);
   }
 }

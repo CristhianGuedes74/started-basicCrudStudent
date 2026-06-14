@@ -10,11 +10,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @MappedSuperclass
+@SuperBuilder
+@NoArgsConstructor
+@Getter
 @EntityListeners(AuditingEntityListener.class)
-@Getter @Setter
 public abstract class DataAuditory {
     @CreatedDate
     @Column(nullable = false, updatable = false)
