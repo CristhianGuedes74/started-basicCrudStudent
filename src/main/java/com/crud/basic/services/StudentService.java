@@ -16,7 +16,6 @@ import com.crud.basic.models.DTOs.student.StudentResponseDetailDTO;
 import com.crud.basic.repositories.IStudentRepository;
 
 @Service
-// @RequiredArgsConstructor
 public class StudentService implements IStudentService{
   private final IStudentRepository repository;
 
@@ -70,10 +69,10 @@ public class StudentService implements IStudentService{
 
   @Override
   public StudentResponseDetailDTO save(StudentRegisterRequestDTO student) {
-    repository.findByIc(student.ic()).orElseThrow(() -> new StudentAlreadyExistException());
-    repository.findByEmail(student.ic()).orElseThrow(() -> 
-      new StudentAlreadyExistException("This email is already used.", HttpStatus.CONFLICT));
-
+    if(repository.findByIc(student.ic()).isPresent()) throw new StudentAlreadyExistException();
+    if(repository.findByEmail(student.email()).isPresent()) throw new 
+      StudentAlreadyExistException("This email is already used.", HttpStatus.CONFLICT);
+      
     Student studentSaved = ToStudentMapper.toEntity(student);
 
     return ToStudentMapper.toResponseDetailDTO(repository.save(studentSaved));
@@ -104,8 +103,7 @@ public class StudentService implements IStudentService{
 
   @Override
   public void newRemove(Long id) {
-    repository.findById(id).orElseThrow(() ->
-      new StudentNotFoundException());
+    if(repository.findById(id).isEmpty()) throw new StudentNotFoundException();
 
     repository.softDeletedById(id);
   }

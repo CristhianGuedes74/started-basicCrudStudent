@@ -21,6 +21,6 @@ public interface IStudentRepository extends JpaRepository<Student, Long>{
 
   @Modifying
   @Transactional
-  @Query("UPDATE Student s SET s.state = 'DELETED' WHERE s.id = id")
+  @Query("UPDATE User s SET s.state = 'DELETED' WHERE s.id = :id AND s.state != 'DELETED'")
   void softDeletedById(@Param("id") Long id);
 }

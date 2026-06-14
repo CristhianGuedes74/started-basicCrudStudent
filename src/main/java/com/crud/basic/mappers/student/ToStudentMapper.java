@@ -34,7 +34,6 @@ public class ToStudentMapper {
     if(dto == null) return null;
 
     return Student.builder()
-      // .ic(dto.ic())
       .name(dto.name())
       .lastname(dto.lastname())
       .age(dto.age())
