@@ -5,15 +5,16 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.crud.basic.exceptions.StudentAlreadyExistException;
-import com.crud.basic.exceptions.StudentNotFoundException;
+import com.crud.basic.exceptions.student.StudentEmailDuplicatedException;
+import com.crud.basic.exceptions.student.StudentIcDuplicatedException;
+import com.crud.basic.exceptions.student.StudentNotFoundException;
 import com.crud.basic.mappers.student.ToStudentMapper;
 import com.crud.basic.models.Student;
 import com.crud.basic.models.DTOs.student.StudentRegisterRequestDTO;
 import com.crud.basic.models.DTOs.student.StudentModifyRequestDTO;
 import com.crud.basic.models.DTOs.student.StudentResponseDTO;
 import com.crud.basic.models.DTOs.student.StudentResponseDetailDTO;
-import com.crud.basic.models.DTOs.student.StudentTestResponseDTO;
+import com.crud.basic.models.DTOs.student.StudentByAdminResponseDTO;
 import com.crud.basic.models.enums.StudentStates;
 import com.crud.basic.repositories.IStudentRepository;
 
@@ -70,20 +71,20 @@ public class StudentService implements IStudentService{
   }
 
   @Override
-  public StudentTestResponseDTO getByIdIgnoringFilter(Long id) {
+  public StudentByAdminResponseDTO getByIdIgnoringFilter(Long id) {
     if(repository.findByIdIgnoringFilter(id).isEmpty()) throw new StudentNotFoundException();
     
     Student student = repository.findByIdIgnoringFilter(id).get();
 
-    return ToStudentMapper.toResponseAllDetailDTO(student);
+    return ToStudentMapper.toResponseAdminDetailDTO(student);
   }
 
   @Override
   public StudentResponseDetailDTO save(StudentRegisterRequestDTO student) {
-    if(repository.findByIc(student.ic()).isPresent()) throw new StudentAlreadyExistException();
+    if(repository.findByIc(student.ic()).isPresent()) throw new StudentIcDuplicatedException();
     if(repository.findByEmail(student.email()).isPresent()) throw new 
-      StudentAlreadyExistException("This email is already used.", HttpStatus.CONFLICT);
-      
+      StudentEmailDuplicatedException();
+  
     Student studentSaved = ToStudentMapper.toEntity(student);
 
     return ToStudentMapper.toResponseDetailDTO(repository.save(studentSaved));
@@ -114,9 +115,8 @@ public class StudentService implements IStudentService{
 
   @Override
   public void remove(Long id) {
-    if(repository.findById(id).isEmpty()) throw new StudentNotFoundException();
+    Student student = repository.findById(id).orElseThrow(() -> new StudentNotFoundException());
 
-    Student student = repository.findById(id).get();
     student.changeStudentStatus(StudentStates.SUSPENDED);
     repository.softDeletedById(id);
   }

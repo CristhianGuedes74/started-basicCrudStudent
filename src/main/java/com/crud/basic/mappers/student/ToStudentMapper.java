@@ -5,7 +5,7 @@ import com.crud.basic.models.DTOs.student.StudentModifyRequestDTO;
 import com.crud.basic.models.DTOs.student.StudentRegisterRequestDTO;
 import com.crud.basic.models.DTOs.student.StudentResponseDTO;
 import com.crud.basic.models.DTOs.student.StudentResponseDetailDTO;
-import com.crud.basic.models.DTOs.student.StudentTestResponseDTO;
+import com.crud.basic.models.DTOs.student.StudentByAdminResponseDTO;
 
 public class ToStudentMapper {
   public static StudentResponseDTO toResponseDTO(Student student){
@@ -31,10 +31,10 @@ public class ToStudentMapper {
     );
   }
 
-  public static StudentTestResponseDTO toResponseAllDetailDTO(Student student){
+  public static StudentByAdminResponseDTO toResponseAdminDetailDTO(Student student){
     if(student == null) return null;
 
-    return new StudentTestResponseDTO(
+    return new StudentByAdminResponseDTO(
       student.getId(),
       student.getIc(),
       student.getEmail(),

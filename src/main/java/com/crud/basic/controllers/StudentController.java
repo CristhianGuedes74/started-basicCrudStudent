@@ -2,7 +2,7 @@ package com.crud.basic.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ import com.crud.basic.models.DTOs.student.StudentRegisterRequestDTO;
 import com.crud.basic.models.DTOs.student.StudentModifyRequestDTO;
 import com.crud.basic.models.DTOs.student.StudentResponseDTO;
 import com.crud.basic.models.DTOs.student.StudentResponseDetailDTO;
-import com.crud.basic.models.DTOs.student.StudentTestResponseDTO;
+import com.crud.basic.models.DTOs.student.StudentByAdminResponseDTO;
 import com.crud.basic.services.IStudentService;
 
 import jakarta.validation.Valid;
@@ -43,21 +43,19 @@ public class StudentController {
   }
 
   @GetMapping("/admin/{id}")
-  public ResponseEntity<StudentTestResponseDTO> showStudentAllDetails(@PathVariable Long id){
+  public ResponseEntity<StudentByAdminResponseDTO> showStudentAllDetails(@PathVariable Long id){
     return ResponseEntity.ok(studentService.getByIdIgnoringFilter(id));
   }
 
   @PostMapping
   public ResponseEntity<StudentResponseDetailDTO> registerStudent(@Valid @RequestBody StudentRegisterRequestDTO student){
-    StudentResponseDetailDTO response = studentService.save(student);
-    return ResponseEntity.status(201).body(response);
+    return ResponseEntity.status(HttpStatus.CREATED).body(studentService.save(student));
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<StudentResponseDetailDTO> updateStudent(@PathVariable Long id,
       @Valid @RequestBody StudentModifyRequestDTO student){
-    StudentResponseDetailDTO response = studentService.modify(id, student);
-    return ResponseEntity.ok(response);
+    return ResponseEntity.ok(studentService.modify(id, student));
   } 
 
   @DeleteMapping("/{id}")

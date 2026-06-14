@@ -1,7 +1,5 @@
 package com.crud.basic.models;
 
-import org.hibernate.annotations.SQLRestriction;
-
 import com.crud.basic.models.enums.StudentStates;
 
 import jakarta.persistence.Entity;

@@ -1,6 +1,5 @@
 package com.crud.basic.repositories;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,11 +15,10 @@ import com.crud.basic.models.Student;
 public interface IStudentRepository extends JpaRepository<Student, Long>{
   Optional<Student> findByIc(String ic);
   Optional<Student> findByEmail(String ic);
-  // List<Student> findByState(StudentStates state);
 
   @Modifying
   @Transactional
-  @Query(value = "UPDATE User s SET s.state = 'DELETED' WHERE s.id = :id AND s.state != 'DELETED'")
+  @Query("UPDATE User s SET s.state = 'DELETED' WHERE s.id = :id AND s.state != 'DELETED'")
   void softDeletedById(@Param("id") Long id);
 
   @Query(value = 
