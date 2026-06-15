@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,8 @@ import com.crud.basic.models.DTOs.course.CourseRequestDTO;
 import com.crud.basic.models.DTOs.course.CourseResponseDTO;
 import com.crud.basic.models.DTOs.course.CourseResponseDetailDTO;
 import com.crud.basic.services.ICourseService;
+import com.crud.basic.validations.IOnCreated;
+import com.crud.basic.validations.IOnUpdated;
 
 import jakarta.validation.Valid;
 
@@ -41,13 +44,13 @@ public class CourseController {
   }
 
   @PostMapping
-  public ResponseEntity<CourseResponseDetailDTO> registerCourse(@Valid @RequestBody CourseRequestDTO dto){
+  public ResponseEntity<CourseResponseDetailDTO> registerCourse(@Valid @Validated(value = IOnCreated.class) @RequestBody CourseRequestDTO dto){
     return new ResponseEntity<>(service.save(dto), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<CourseResponseDetailDTO> updateCourse(@PathVariable Long id, 
-    @Valid @RequestBody CourseModifyRequestDTO dto){
+    @Valid @Validated(value = IOnUpdated.class) @RequestBody CourseModifyRequestDTO dto){
     return ResponseEntity.ok(service.modify(id, dto));
   }
 
