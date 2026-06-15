@@ -1,4 +1,4 @@
-package com.crud.basic.mappers.student;
+package com.crud.basic.mappers;
 
 import com.crud.basic.models.Student;
 import com.crud.basic.models.DTOs.student.StudentModifyRequestDTO;
@@ -48,14 +48,10 @@ public class ToStudentMapper {
     );
   }
 
-  public static Student toEntity(StudentModifyRequestDTO dto){
-    if(dto == null) return null;
+  public static void toUpdateEntity(StudentModifyRequestDTO dto, Student student){
+    if(dto == null) return;
 
-    return Student.builder()
-      .name(dto.name())
-      .lastname(dto.lastname())
-      .age(dto.age())
-    .build();
+    student.updateStudent(dto.name(), dto.lastname(), dto.age());
   }
 
   public static Student toEntity(StudentRegisterRequestDTO dto){
