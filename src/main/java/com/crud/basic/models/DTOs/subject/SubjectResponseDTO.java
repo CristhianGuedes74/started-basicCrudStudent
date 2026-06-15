@@ -1,15 +1,15 @@
 package com.crud.basic.models.DTOs.subject;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 
 public record SubjectResponseDTO(
     @Positive(message = "ID must be positive. Try it again.")
     Long id,
 
-    @NotBlank(message = "Subject name cannot be empty. Try it again.")
+    @NotEmpty(message = "Subject name cannot be empty. Try it again.")
     String name,
     
-    @NotBlank(message = "Subject code cannot be empty. Try it again.")
+    @NotEmpty(message = "Subject code cannot be empty. Try it again.")
     String code
 ) {}

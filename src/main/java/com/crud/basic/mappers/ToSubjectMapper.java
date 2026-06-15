@@ -55,6 +55,9 @@ public class ToSubjectMapper {
   public static void toUpdateEntity(SubjectModifyRequestDTO dto, Subject subject){
     if(dto == null || subject == null) return;
 
-    subject.editSubject(dto.name(), dto.credits(), dto.weeklyHours());
+    String name = (dto.name() == null) ? subject.getName() : dto.name();
+    Integer credits = (dto.credits() == null) ? subject.getCredits() : dto.credits();
+    Integer weeklyHours = (dto.weeklyHours() == null) ? subject.getWeeklyHours() : dto.weeklyHours();
+    subject.editSubject(name, credits, weeklyHours);
   }
 }
