@@ -53,7 +53,7 @@ public class ToSubjectMapper {
   }
 
   public static void toUpdateEntity(SubjectModifyRequestDTO dto, Subject subject){
-    if(dto == null) return;
+    if(dto == null || subject == null) return;
 
     subject.editSubject(dto.name(), dto.credits(), dto.weeklyHours());
   }

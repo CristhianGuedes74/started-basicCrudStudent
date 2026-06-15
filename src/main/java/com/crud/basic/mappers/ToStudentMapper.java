@@ -49,7 +49,7 @@ public class ToStudentMapper {
   }
 
   public static void toUpdateEntity(StudentModifyRequestDTO dto, Student student){
-    if(dto == null) return;
+    if(dto == null || student == null) return;
 
     student.updateStudent(dto.name(), dto.lastname(), dto.age());
   }

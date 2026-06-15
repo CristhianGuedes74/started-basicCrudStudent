@@ -47,7 +47,7 @@ public class ToCourseMapper {
   }
 
   public static void toUpdateEntity(CourseModifyRequestDTO dto, Course course, Subject subject){
-    if(dto == null) return;
+    if(dto == null || course == null || subject == null) return;
 
     course.changeCourseInfo(dto.name(), subject);
     course.changeCourseCycle(dto.cycle());

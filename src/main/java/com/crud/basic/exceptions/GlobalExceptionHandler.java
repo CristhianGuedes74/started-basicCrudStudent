@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import com.crud.basic.exceptions.course.CourseNotFoundException;
+import com.crud.basic.exceptions.enrollment.EnrollmentNotFoundException;
 import com.crud.basic.exceptions.student.StudentEmailDuplicatedException;
 import com.crud.basic.exceptions.student.StudentIcDuplicatedException;
 import com.crud.basic.exceptions.student.StudentNotFoundException;
@@ -150,6 +151,22 @@ public class GlobalExceptionHandler {
       null
     );
 
+    return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+  }
+
+  //? Enrollmnent
+  // Enrolled not found
+  @ExceptionHandler(exception = EnrollmentNotFoundException.class)
+  public ResponseEntity<ErrorResponseDTO> handlerNotFound(EnrollmentNotFoundException ex, WebRequest req){
+    ErrorResponseDTO error = new ErrorResponseDTO(
+      LocalDateTime.now(),
+      HttpStatus.NOT_FOUND.value(),
+      HttpStatus.NOT_FOUND.name(),
+      ex.getMessage(),
+      req.getDescription(false).replace("uri=", ""),
+      null
+    );
+    
     return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
   }
 }

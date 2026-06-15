@@ -11,7 +11,7 @@ public class BusinessRuleException extends RuntimeException{
   }
 
   public BusinessRuleException(){
-    super("An unexpected Error ocurred. Please try again.");
+    super("An unexpected Error ocurred. Please try it again.");
     this.status = HttpStatus.BAD_REQUEST;
   }
 }
