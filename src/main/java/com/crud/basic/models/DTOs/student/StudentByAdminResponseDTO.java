@@ -5,7 +5,7 @@ import java.time.Instant;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -13,33 +13,33 @@ public record StudentByAdminResponseDTO(
   @Positive(message = "ID must be positive. Try it again.")
   Long id,
 
-  @NotBlank(message = "Student IC incorrect. Try it again.")
+  @NotEmpty(message = "Student IC incorrect. Try it again.")
   String ic,
 
-  @Email(message = "Student email incorrect. Try it again.") @NotBlank(message = 
-    "Student email cannot be empty. Try it again.")
+  @Email(message = "Student email incorrect. Try it again.")
+  @NotEmpty(message = "Student email cannot be empty. Try it again.")
   String email,
   
-  @NotBlank(message = "Student name incorrect. Try it again.")
+  @NotEmpty(message = "Student name incorrect. Try it again.")
   String name,
 
-  @NotBlank(message = "Student Lastname incorrect. Try it again.")
+  @NotEmpty(message = "Student Lastname incorrect. Try it again.")
   String lastname,
 
   @NotNull(message = "Student age cannot be null.")
-  @Min(value = 6, message = "The minimum Student age value is 6.") @Max(value = 52, message = 
-    "The maximum student age value is 52.")
+  @Min(value = 6, message = "The minimum Student age value is 6.")
+  @Max(value = 52, message = "The maximum student age value is 52.")
   Integer age,
 
-  @NotBlank(message = "User state cannot be empty. Try it again.")
+  @NotEmpty(message = "User state cannot be empty. Try it again.")
   String state,
 
-  @NotBlank(message = "User state cannot be empty. Try it again.")
+  @NotEmpty(message = "User state cannot be empty. Try it again.")
   String academicState,
 
-  @NotNull(message = "Date cannot be null.")
+  @NotEmpty(message = "Date cannot be null.")
   Instant createdAt,
 
-  @NotNull(message = "Date cannot be null.")
+  @NotEmpty(message = "Date cannot be null.")
   Instant updatedAt
 ) {}

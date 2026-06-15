@@ -13,7 +13,7 @@ public record StudentModifyRequestDTO(
   String lastname,
 
   @NotNull(message = "Student age cannot be null.")
-  @Min(value = 6, message = "The minimum Student age value is 6.") @Max(value = 52, message = 
-    "The maximum student age value is 52.")
+  @Min(value = 6, message = "The minimum Student age value is 6.")
+  @Max(value = 52, message = "The maximum student age value is 52.")
   Integer age
 ) {}

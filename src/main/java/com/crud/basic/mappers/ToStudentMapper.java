@@ -51,7 +51,10 @@ public class ToStudentMapper {
   public static void toUpdateEntity(StudentModifyRequestDTO dto, Student student){
     if(dto == null || student == null) return;
 
-    student.updateStudent(dto.name(), dto.lastname(), dto.age());
+    String name = (dto.name() == null) ? student.getName() : dto.name();
+    String lastname = (dto.lastname() == null) ? student.getLastname() : dto.lastname();
+    Integer age = (dto.age() == null) ? student.getAge() : dto.age();
+    student.updateStudent(name, lastname, age);
   }
 
   public static Student toEntity(StudentRegisterRequestDTO dto){

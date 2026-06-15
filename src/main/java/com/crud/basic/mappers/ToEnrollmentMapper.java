@@ -8,7 +8,6 @@ import com.crud.basic.models.Student;
 import com.crud.basic.models.DTOs.enrollment.EnrollmentRequestDTO;
 import com.crud.basic.models.DTOs.enrollment.EnrollmentResponseDTO;
 import com.crud.basic.models.DTOs.enrollment.EnrollmentResponseDetailDTO;
-import com.crud.basic.models.enums.StudentStates;
 
 public class ToEnrollmentMapper {
   public static EnrollmentResponseDTO toResponseDTO(Enrollment enrollment){
