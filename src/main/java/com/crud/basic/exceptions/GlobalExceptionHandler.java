@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+import com.crud.basic.exceptions.course.CourseNotFoundException;
 import com.crud.basic.exceptions.student.StudentEmailDuplicatedException;
 import com.crud.basic.exceptions.student.StudentIcDuplicatedException;
 import com.crud.basic.exceptions.student.StudentNotFoundException;
@@ -41,6 +42,21 @@ public class GlobalExceptionHandler {
       errors
     );
   
+    return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+  }
+  
+  // Any error to throw
+  @ExceptionHandler(exception = BusinessRuleException.class)
+  public ResponseEntity<ErrorResponseDTO> handlerBusinessException(BusinessRuleException ex, WebRequest req){
+    ErrorResponseDTO error = new ErrorResponseDTO(
+      LocalDateTime.now(),
+      HttpStatus.BAD_REQUEST.value(),
+      HttpStatus.BAD_REQUEST.name(),
+      ex.getMessage(),
+      req.getDescription(false).replace("uri=", ""),
+      null
+    );
+
     return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
   }
 
@@ -90,11 +106,41 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(error, HttpStatus.CONFLICT);
   }
 
+  //? Subject
+  // Subject code duplicated
+  @ExceptionHandler(exception = SubjectCodeDuplicatedException.class)
+  public ResponseEntity<ErrorResponseDTO> handlerDuplicated(SubjectCodeDuplicatedException ex, WebRequest req){
+    ErrorResponseDTO error = new ErrorResponseDTO(
+      LocalDateTime.now(),
+      HttpStatus.CONFLICT.value(),
+      HttpStatus.CONFLICT.name(),
+      ex.getMessage(),
+      req.getDescription(false).replace("uri=", ""),
+      null
+    );
 
-  //? SUBJECT
-  // Subject not found
+    return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+  }
+
+  // Subject code duplicated
   @ExceptionHandler(exception = SubjectNotFoundException.class)
   public ResponseEntity<ErrorResponseDTO> handlerNotFound(SubjectNotFoundException ex, WebRequest req){
+    ErrorResponseDTO error = new ErrorResponseDTO(
+      LocalDateTime.now(),
+      HttpStatus.CONFLICT.value(),
+      HttpStatus.CONFLICT.name(),
+      ex.getMessage(),
+      req.getDescription(false).replace("uri=", ""),
+      null
+    );
+
+    return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+  }
+
+
+  //? Course
+  // Course not found
+  public ResponseEntity<ErrorResponseDTO> handlerNotFound(CourseNotFoundException ex, WebRequest req){
     ErrorResponseDTO error = new ErrorResponseDTO(
       LocalDateTime.now(),
       HttpStatus.NOT_FOUND.value(),
@@ -105,20 +151,5 @@ public class GlobalExceptionHandler {
     );
 
     return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-  }
-
-  // Subject code duplicated
-  @ExceptionHandler(exception = SubjectCodeDuplicatedException.class)
-  public ResponseEntity<ErrorResponseDTO> handlerDuplicate(SubjectCodeDuplicatedException ex, WebRequest req){
-    ErrorResponseDTO error = new ErrorResponseDTO(
-      LocalDateTime.now(),
-      HttpStatus.CONFLICT.value(),
-      HttpStatus.CONFLICT.name(),
-      ex.getMessage(),
-      req.getDescription(false).replace("uri=", ""),
-      null
-    );
-
-    return new ResponseEntity<ErrorResponseDTO>(error, HttpStatus.CONFLICT);
   }
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.crud.basic.exceptions.student.StudentEmailDuplicatedException;
 import com.crud.basic.exceptions.student.StudentIcDuplicatedException;
 import com.crud.basic.exceptions.student.StudentNotFoundException;
-import com.crud.basic.mappers.student.ToStudentMapper;
+import com.crud.basic.mappers.ToStudentMapper;
 import com.crud.basic.models.Student;
 import com.crud.basic.models.DTOs.student.StudentRegisterRequestDTO;
 import com.crud.basic.models.DTOs.student.StudentModifyRequestDTO;
@@ -96,7 +96,7 @@ public class StudentService implements IStudentService{
       new StudentNotFoundException());
 
     // mapper.toEntity(dto, student);
-    student.updateStudent(dto.name(), dto.lastname(), dto.age());
+    ToStudentMapper.toUpdateEntity(dto, student);
 
     return ToStudentMapper.toResponseDetailDTO(repository.save(student));
   }

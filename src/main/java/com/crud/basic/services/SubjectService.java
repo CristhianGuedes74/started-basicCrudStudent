@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.crud.basic.exceptions.subject.SubjectCodeDuplicatedException;
 import com.crud.basic.exceptions.subject.SubjectNotFoundException;
-import com.crud.basic.mappers.subject.ToSubjectMapper;
+import com.crud.basic.mappers.ToSubjectMapper;
 import com.crud.basic.models.Subject;
 import com.crud.basic.models.DTOs.subject.SubjectModifyRequestDTO;
 import com.crud.basic.models.DTOs.subject.SubjectRegisterRequestDTO;
@@ -60,7 +60,7 @@ public class SubjectService implements ISubjectService{
     Subject subject = repository.findById(id).orElseThrow(() -> 
       new SubjectNotFoundException());
 
-    subject.editSubject(dto.name(), dto.credits(), dto.weeklyHours());
+    ToSubjectMapper.toUpdateEntity(dto, subject);
 
     return ToSubjectMapper.toResponseDetailDTO(repository.save(subject));
   }
