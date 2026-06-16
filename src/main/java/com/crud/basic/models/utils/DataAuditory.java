@@ -11,12 +11,13 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @MappedSuperclass
 @SuperBuilder
 @NoArgsConstructor
-@Getter
+@Getter @Setter
 @EntityListeners(AuditingEntityListener.class)
 public abstract class DataAuditory {
     @CreatedDate

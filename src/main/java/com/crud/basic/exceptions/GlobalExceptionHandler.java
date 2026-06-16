@@ -61,6 +61,23 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
   }
 
+  //? SystemParameter
+  @ExceptionHandler(exception = OperationTimeWindowException.class)
+  public ResponseEntity<ErrorResponseDTO> handleTimeWindowException(
+    OperationTimeWindowException ex, WebRequest req) {
+  
+    ErrorResponseDTO error = new ErrorResponseDTO(
+      LocalDateTime.now(),
+      HttpStatus.FORBIDDEN.value(),
+      HttpStatus.FORBIDDEN.name(),
+      ex.getMessage(),
+      req.getDescription(false).replace("uri=", ""),
+      null
+    );
+  
+    return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+  }
+
   //? STUDENT
   // Student not found
   @ExceptionHandler(exception = StudentNotFoundException.class)
