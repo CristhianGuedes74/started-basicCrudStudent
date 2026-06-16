@@ -2,13 +2,17 @@ package com.crud.basic.services;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.crud.basic.models.DTOs.student.StudentRegisterRequestDTO;
 import com.crud.basic.models.DTOs.student.StudentModifyRequestDTO;
 import com.crud.basic.models.DTOs.student.StudentResponseDTO;
 import com.crud.basic.models.DTOs.student.StudentResponseDetailDTO;
 import com.crud.basic.models.DTOs.student.StudentByAdminResponseDTO;
+import com.crud.basic.models.DTOs.student.StudentFilterDTO;
 
 public interface IStudentService {
+  Page<StudentResponseDTO> filterStudents(StudentFilterDTO dto);
   List<StudentResponseDTO> getAll();
   List<StudentResponseDetailDTO> getAllDetails();
   StudentResponseDetailDTO getById(Long id);

@@ -1,8 +1,12 @@
 package com.crud.basic.models;
 
+import java.util.List;
+
 import com.crud.basic.models.enums.StudentStates;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +20,9 @@ import lombok.experimental.SuperBuilder;
 public class Student extends User{
   @Builder.Default
   private StudentStates academicState = StudentStates.ADDED;
+
+  @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+  private List<Enrollment> enrollments;
 
   public void changeStudentStatus(StudentStates status){
     this.academicState = status;

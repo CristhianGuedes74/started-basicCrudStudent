@@ -2,6 +2,11 @@ package com.crud.basic.services;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.crud.basic.exceptions.student.StudentEmailDuplicatedException;
@@ -14,8 +19,10 @@ import com.crud.basic.models.DTOs.student.StudentModifyRequestDTO;
 import com.crud.basic.models.DTOs.student.StudentResponseDTO;
 import com.crud.basic.models.DTOs.student.StudentResponseDetailDTO;
 import com.crud.basic.models.DTOs.student.StudentByAdminResponseDTO;
+import com.crud.basic.models.DTOs.student.StudentFilterDTO;
 import com.crud.basic.models.enums.StudentStates;
 import com.crud.basic.repositories.IStudentRepository;
+import com.crud.basic.specifications.StudentSpecifications;
 
 @Service
 public class StudentService implements IStudentService{
@@ -23,6 +30,30 @@ public class StudentService implements IStudentService{
 
   public StudentService(IStudentRepository repository){
     this. repository = repository;
+  }
+
+  @Override
+  public Page<StudentResponseDTO> filterStudents(StudentFilterDTO filters) {
+    // Construir la paginación
+    Pageable pageable = PageRequest.of(
+      filters.getPage(),
+      filters.getSize(),
+      Sort.Direction.fromString(filters.getSortDir()),
+      filters.getSortBy()
+    );
+  
+    // Construir la especificación dinámicamente
+    Specification<Student> spec = Specification
+      .where(StudentSpecifications.hasName(filters.getName()))
+      .and(StudentSpecifications.hasEmail(filters.getEmail()))
+      .and(StudentSpecifications.hasState(filters.getState()))
+      .and(StudentSpecifications.hasAcademicStatus(filters.getAcademicStatus()))
+      .and(StudentSpecifications.hasCourseName(filters.getCourseName())) // 🔥 Filtro por relación
+      .and(StudentSpecifications.registeredBetween(filters.getRegisteredFrom(), filters.getRegisteredTo()));
+  
+    // Ejecutar la consulta con paginación
+    return repository.findAll(spec, pageable)
+    .map(ToStudentMapper::toResponseDTO);
   }
 
   @Override
